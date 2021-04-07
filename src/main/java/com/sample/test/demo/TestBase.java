@@ -1,10 +1,14 @@
 package com.sample.test.demo;
 
 import static org.testng.Assert.fail;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+
+import java.util.concurrent.TimeUnit;
 
 public class TestBase {
 
@@ -22,6 +26,8 @@ public class TestBase {
 
     private void navigateToSite() {
         driver.get(url);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     @AfterClass(alwaysRun = true)
@@ -38,8 +44,8 @@ public class TestBase {
             if (config.getPlatform().equalsIgnoreCase("mac")) {
                 System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver/mac/chromedriver");
             } else {
-                System.setProperty("webdriver.chrome.driver",
-                        "src/test/resources/chromedriver/windows/chromedriver.exe");
+                WebDriverManager.chromedriver().setup();
+
             }
             driver = new ChromeDriver();
         }
