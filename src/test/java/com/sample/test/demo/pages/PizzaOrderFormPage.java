@@ -44,7 +44,7 @@ public class PizzaOrderFormPage {
 
     @FindBy(id = "dialog")
     public WebElement dialog;
-    @FindBy(id = "//div[@id='dialog']/p")
+    @FindBy(xpath = "//div[@id='dialog']/p")
     public WebElement dialogText;
 
     @FindBy(id = "pizza1Qty")
@@ -52,8 +52,7 @@ public class PizzaOrderFormPage {
     @FindBy(id = "pizza1Cost")
     public WebElement costInpt;
 
-    @FindBy(xpath = "//*[@id='dialog']/p")
-    public WebElement confirmationOrderTxt;
+
 
     public PizzaOrderFormPage selectDropDown(WebElement element, String value){
         Select oSelect=new Select(element);
@@ -61,17 +60,19 @@ public class PizzaOrderFormPage {
         return this;
     }
 
-    public void fillOutForm(String pizza1Txt, String pizzaTopping1,String pizzaTopping2, String quantity,String namePerson, String emailPerson,String paymentType){
-        selectDropDown(pizza1, "Small 6 Slices - no toppings");
-        selectDropDown(pizza1Toppings1,"Diced Mango");
-        selectDropDown(pizza1Toppings2,"Olives");
-        quantityInpt.sendKeys("1");
-        name.sendKeys("Mike Smith");
-        email.sendKeys("mike@gmail.com");
-        phone.sendKeys("9724565485");
-        radioCreditCard.click();
-        placeOrderButton.click();
-        Assert.assertEquals(confirmationOrderTxt.getText(),"Thank you for your order! TOTAL: 6.75 Small 6 Slices - no toppings");
+    public void fillOutForm(String pizza1Txt, String pizzaTopping1,String pizzaTopping2, String quantity,String namePerson, String emailPerson,String phoneNumber,String paymentType){
+        selectDropDown(pizza1, pizza1Txt);
+        selectDropDown(pizza1Toppings1,pizzaTopping1);
+        selectDropDown(pizza1Toppings2,pizzaTopping2);
+        quantityInpt.sendKeys(quantity);
+        name.sendKeys(namePerson);
+        email.sendKeys(emailPerson);
+        phone.sendKeys(phoneNumber);
+        if(paymentType.equals("CreditCard")){
+            radioCreditCard.click();
+        }else {
+            radioCash.click();
+        }
     }
 
 
